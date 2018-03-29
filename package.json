@@ -6,9 +6,20 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run build && npm run serve",
+    "serve": "http-server ./build",
+    "build": "for b in dir html css; do npm run \"build:$b\"; done",
+    "build:dir": "rm -fR build && mkdir build",
+    "build:html": "pug -P -O ./data.json ./src/*.pug -o ./build",
+    "build:css": "sass --load-path=node_modules/bootstrap/scss src/sass/index.sass > build/bundle.css",
+    "watch:html": "pug -P -O ./data.json ./src/*.pug -o ./build -w",
+    "watch:css": "sass --watch --sourcemap=none src/sass/index.sass:build/bundle.css",
+    "test": "npm run build"
   },
   "dependencies": {
-    "bootstrap": "^4.0.0"
+    "bootstrap": "^4.0.0",
+    "http-server": "^0.11.1",
+    "pug-cli": "^1.0.0-alpha6",
+    "sass": "^1.0.0"
   }
 }
